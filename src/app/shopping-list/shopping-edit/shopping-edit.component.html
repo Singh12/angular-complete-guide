@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col-xs-12">
+        <form (ngSubmit)="addIngredients()" #f="ngForm">
+            <div class="row">
+                <div class="col-sm-5 form-group">
+                    <label for="name" [ngClass]="{myclass: myClass === 'fijj'}" >Name</label>
+                    <input type="text" id="name" name="recipename" ngModel class="form-control" #recipname="ngModel" required>
+                    <span class="help-block" *ngIf="!recipname.valid && recipname.touched">Please enter recipe</span>
+                </div>
+                <div class="col-sm-2 form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" id="amount" name="amount" ngModel class="form-control" #amount="ngModel" required pattern="^\+?[1-9]\d{0,2}$">
+                    <span class="help-block" *ngIf="!amount.valid && amount.touched">Please enter correct number</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <button class="btn btn-success" type="submit" [disabled]="!f.valid">
+                        {{editMode ? 'Update': 'Add'}}
+                    </button>
+                    
+                    <button class="btn btn-danger" type="button" *ngIf="editMode" (click)="deleteSohppingListItem()">Delete</button>
+                    <button class="btn btn-primary" type="button" (click)="resetForm()">Reset</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
