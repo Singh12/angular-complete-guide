@@ -3,10 +3,11 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTr
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { AuthService } from './auth.service';
-
+import { Store } from '@ngrx/store';
+import * as fromApp from '../store/app.reducer';
 @Injectable({providedIn: 'root'})
 export class AuthGard implements CanActivate {
-    constructor(private authService: AuthService, private router: Router) {}
+    constructor(private authService: AuthService, private router: Router, private store: Store<fromApp.AppState>) {}
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Promise<boolean> | Observable<boolean | UrlTree> {
         // const loginToken = JSON.parse(localStorage.getItem('userData'));
         // if (loginToken._token) {
@@ -14,8 +15,11 @@ export class AuthGard implements CanActivate {
         // } else {
         //     this.router.navigate(['/']);
         // }
-        return this.authService.user.pipe(take(1), map(user => {
+        return this.store.select('auth').pipe(take(1),
+        map(authState => authState.user),
+        map(user => {
             const isAuth = !!user;
+            console.log('I am called', isAuth);
             if (isAuth) {
                 return true;
             } else {

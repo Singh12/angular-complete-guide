@@ -3,9 +3,10 @@ import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { Subject } from 'rxjs';
-import { Route } from '@angular/compiler/src/core';
-import { Router } from '@angular/router';
-
+import { Store } from '@ngrx/store';
+import * as ShoppingListActions from '../shopping-list/store/shopping-list-actions';
+import * as formShoppingList from '../shopping-list/store/shopping-list.reducer';
+import * as fromApp from '../store/app.reducer';
 @Injectable({
   providedIn: 'root'
 })
@@ -16,14 +17,17 @@ export class RecipeService {
   //   new Recipe('Chicken1', 'Chicken is very testy1', 'https://www.indianhealthyrecipes.com/wp-content/uploads/2018/07/chilli-chicken-recipe-500x500.jpg', [new Ingredient('potatto', 88)])
   // ];
   recipes: Recipe[] = [];
-  constructor(private shoppList: ShoppingListService, private route: Router) { }
+  constructor(
+    private shoppList: ShoppingListService,
+    private store: Store<fromApp.AppState>) { }
 
   getRecipe() {
     return this.recipes.slice();
   }
 
   addSoppingListRecipe(shoppingList: Ingredient[]) {
-    this.shoppList.addIngredients(shoppingList);
+    this.store.dispatch(new ShoppingListActions.AddIngredients(shoppingList));
+    // this.shoppList.addIngredients(shoppingList);
   }
 
   fetchRecipe(index: number) {

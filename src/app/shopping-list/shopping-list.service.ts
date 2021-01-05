@@ -9,18 +9,18 @@ export class ShoppingListService {
   getUpdetedIngerdients = new Subject<Ingredient[]>();
   startedEditing = new Subject<number>();
    private ingredients: Ingredient[] = [
-    new Ingredient('chicken', 1),
-    new Ingredient('Egg', 2)
+    new Ingredient('Apple', 1),
+    new Ingredient('Tomatoes', 2)
   ];
   constructor() { }
   getIngredients() {
     return this.ingredients.slice();
   }
   addIngredient(ingredient: Ingredient) {
-    console.log(ingredient);
     this.ingredients.push(ingredient);
     this.getUpdetedIngerdients.next(this.ingredients);
   }
+  // this is comming from recipe page
   addIngredients(ingredients: Ingredient[]) {
     this.ingredients.push(...ingredients);
     this.getUpdetedIngerdients.next(this.ingredients);
@@ -29,7 +29,7 @@ export class ShoppingListService {
     const ingredent = this.ingredients.slice();
     return ingredent[index];
   }
-  updateIngredient(index: number, ingredient: Ingredient){
+  updateIngredient(index: number, ingredient: Ingredient) {
     // this.ingredients.splice(index, 1 , ingredient);
     this.ingredients[index] = ingredient;
     this.getUpdetedIngerdients.next(this.ingredients.slice());
